@@ -55,7 +55,6 @@ return {
 				"swiftlint",
 				"cpplint",
 				"ast_grep",
-				"r_language_server",
 			},
 		})
 	end,

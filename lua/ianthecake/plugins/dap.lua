@@ -15,26 +15,30 @@ return {
 			dapui.close()
 		end
 
-		dap.adapters.lldb = {
-			type = "executable",
-			command = "/usr/local/Cellar/llvm/20.1.1/bin/lldb-dap", -- Change this path if you're on macOS or using another path
-			name = "lldb",
+		dap.adapters.codelldb = {
+			type = "server",
+			port = "${port}",
+			executable = {
+				-- Replace with your actual path if different
+				command = "/Users/ianthecake/.local/share/nvim/mason/bin/codelldb",
+				args = { "--port", "${port}" },
+			},
 		}
 
-		dap.configurations.cpp = {
+		dap.configurations.c = {
 			{
-				name = "Launch C++ executable",
-				type = "lldb",
+				name = "Launch file",
+				type = "codelldb",
 				request = "launch",
 				program = function()
-					return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
+					return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/main", "file")
 				end,
 				cwd = "${workspaceFolder}",
 				stopOnEntry = false,
-				args = {},
-				runInTerminal = false,
 			},
 		}
+
+		dap.configurations.cpp = dap.configurations.c
 
 		dap.configurations.rust = dap.configurations.cpp
 	end,
